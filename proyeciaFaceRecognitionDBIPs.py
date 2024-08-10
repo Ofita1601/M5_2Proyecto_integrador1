@@ -12,6 +12,8 @@ import time
 import mysql.connector
 from mysql.connector import Error
 import socket
+import pandas as pd
+
 #Función para obtener IP_privada
 
 def obtener_ip_privada():
@@ -70,8 +72,17 @@ def insertar_datos(ip_privada, ip_publica, nombre_usuario):
 
     cursor.close()
 
+    # Ejecutar la consulta para seleccionar todos los datos de la tabla datos_usuario
+    consulta = "SELECT * FROM datos_usuario"
+    datos = pd.read_sql(consulta, conexion)
 
+    # Exportar los datos a un archivo Excel
+    datos.to_excel('datos_usuario.xlsx', index=False)
 
+    # Cerrar la conexión a la base de datos
+    conexion.close()
+
+    print("Datos exportados exitosamente a datos_usuario.xlsx")
 
 # Inicializar Mediapipe FaceMesh
 
